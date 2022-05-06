@@ -10,11 +10,18 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { MessagesComponent } from './messages/messages.component';
+import { PhoneComponent } from './phone/phone.component';
+import {FormsModule} from '@angular/forms';
+import { ListComponent } from './messages/list/list.component';
+import { SelectComponent } from './messages/select/select.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MessagesComponent
+    MessagesComponent,
+    PhoneComponent,
+    ListComponent,
+    SelectComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +30,8 @@ import { MessagesComponent } from './messages/messages.component';
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
-    provideMessaging(() => getMessaging())
+    provideMessaging(() => getMessaging()),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

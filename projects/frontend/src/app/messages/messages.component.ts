@@ -3,6 +3,7 @@ import {MessagesService} from 'projects/frontend/src/app/services/messages.servi
 import {Observable} from 'rxjs';
 import {Message} from 'projects/frontend/src/app/interfaces/message';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {PhoneService} from 'projects/frontend/src/app/services/phone.service';
 
 @Component({
   selector: 'app-messages',
@@ -11,15 +12,14 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 })
 export class MessagesComponent implements OnInit {
   messages$!: Observable<Message[]>;
+  phone$: Observable<string>;
 
-  constructor(private messagesSvc: MessagesService, private sanitizer: DomSanitizer) {
+  constructor(private messagesSvc: MessagesService, private phoneSvc: PhoneService) {
     this.messages$ = this.messagesSvc.messages$;
+    this.phone$ = this.phoneSvc.phone$;
   }
 
   ngOnInit(): void {
   }
 
-  setMessage({text}: Message): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(`sms://5555555555?body=${text}`);
-  }
 }

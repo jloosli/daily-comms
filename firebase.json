@@ -13,7 +13,7 @@
   "hosting": [
     {
       "target": "frontend",
-      "public": "projects/frontend/public",
+      "public": "dist/frontend",
       "ignore": [
         "firebase.json",
         "**/.*",

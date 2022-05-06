@@ -12,7 +12,7 @@
   },
   "hosting": [
     {
-      "target": "daily-comms",
+      "target": "frontend",
       "public": "projects/frontend/public",
       "ignore": [
         "firebase.json",

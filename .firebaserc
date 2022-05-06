@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "daily-comms"
+  },
+  "targets": {
+    "daily-comms": {
+      "hosting": {
+        "frontend": [
+          "daily-comms"
+        ]
+      }
+    }
   }
 }

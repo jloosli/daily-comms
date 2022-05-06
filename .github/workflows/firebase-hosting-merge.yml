@@ -13,9 +13,13 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm install
       - run: npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAILY_COMMS }}'
-          projectId: "daily-comms"
-          channelId: live
+      - run: npx firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN" --non-interactive --project=daily-comms
+        env:
+          FIREBASE_TOKEN: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_CATTLE_AUCTION_APP }}"
+
+#      - uses: FirebaseExtended/action-hosting-deploy@v0
+#        with:
+#          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+#          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAILY_COMMS }}'
+#          projectId: "daily-comms"
+#          channelId: live

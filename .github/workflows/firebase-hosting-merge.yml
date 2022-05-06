@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm install
       - run: npm run build
-      - run: npx firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN"
+      - run: npx firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN"  --non-interactive --project=daily-comms
         env:
           FIREBASE_TOKEN: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAILY_COMMS }}"
 

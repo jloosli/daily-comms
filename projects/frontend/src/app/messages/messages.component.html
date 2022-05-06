@@ -1,1 +1,1 @@
-<p *ngFor="let message of (messages$ | async)">{{message.text}}</p>
+<div *ngFor="let message of (messages$ | async)"><a [href]="setMessage(message)">{{message.text}}</a></div>

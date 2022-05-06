@@ -30,6 +30,6 @@ const messageConverter = {
   },
   fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Message => {
     const {count = 0, last_sent, text} = snapshot.data(options);
-    return {text: text, count: count, last_sent: last_sent.toDate()};
+    return {text: text, count: count, last_sent: last_sent?.toDate()};
   },
 };

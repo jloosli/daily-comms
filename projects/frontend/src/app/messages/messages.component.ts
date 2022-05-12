@@ -1,25 +1,43 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MessagesService} from 'projects/frontend/src/app/services/messages.service';
-import {Observable} from 'rxjs';
+import {firstValueFrom, Observable, take} from 'rxjs';
 import {Message} from 'projects/frontend/src/app/interfaces/message';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {PhoneService} from 'projects/frontend/src/app/services/phone.service';
+import {ISendMessage} from 'projects/frontend/src/app/messages/select/select.component';
 
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.scss'],
 })
-export class MessagesComponent implements OnInit {
+export class MessagesComponent {
   messages$!: Observable<Message[]>;
   phone$: Observable<string>;
+  selectedMessage: Message | undefined;
+  smsLink: SafeResourceUrl | undefined;
 
-  constructor(private messagesSvc: MessagesService, private phoneSvc: PhoneService) {
+  constructor(private messagesSvc: MessagesService, private phoneSvc: PhoneService, private sanitizer: DomSanitizer) {
     this.messages$ = this.messagesSvc.messages$;
     this.phone$ = this.phoneSvc.phone$;
   }
 
-  ngOnInit(): void {
+  @ViewChild('smsLinkRef', {static: true}) smsLinkRef!: ElementRef;
+
+  async onSend(message: ISendMessage): Promise<void> {
+    let theMessage = await this.setMessage(message);
+    this.smsLink = theMessage;
+  }
+
+  onSelected(id: string): void {
+    this.messages$.pipe(take(1)).subscribe(messages => {
+      this.selectedMessage = messages.find(message => message.id === id);
+    });
+  }
+
+  private async setMessage({text}: Pick<Message, 'text'>): Promise<SafeResourceUrl> {
+    const phone = await firstValueFrom(this.phone$.pipe(take(1)));
+    return this.sanitizer.bypassSecurityTrustResourceUrl(`sms://${phone}?body=${text}`);
   }
 
 }

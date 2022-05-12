@@ -9,8 +9,8 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 })
 export class ListComponent implements OnInit {
 
-  @Input() messages: Message[]|null = [];
-  @Input() phone: string|null  = '';
+  @Input() messages: Message[] | null = [];
+  @Input() phone: string | null = '';
   @Output() selectMessage = new EventEmitter<string>();
   @Output() deleteMessage = new EventEmitter<string>();
 
@@ -20,8 +20,11 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  setMessage({text}: Message): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(`sms://${this.phone}?body=${text}`);
+
+
+  onSelect({id}: Message): void {
+    console.log(id);
+    this.selectMessage.emit(id);
   }
 
 

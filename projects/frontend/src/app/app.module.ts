@@ -11,7 +11,7 @@ import { provideFunctions,getFunctions } from '@angular/fire/functions';
 import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { MessagesComponent } from './messages/messages.component';
 import { PhoneComponent } from './phone/phone.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ListComponent } from './messages/list/list.component';
 import { SelectComponent } from './messages/select/select.component';
 
@@ -31,6 +31,7 @@ import { SelectComponent } from './messages/select/select.component';
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     provideMessaging(() => getMessaging()),
+    ReactiveFormsModule,
     FormsModule
   ],
   providers: [],

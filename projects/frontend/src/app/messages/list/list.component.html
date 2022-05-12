@@ -1,4 +1,4 @@
 <div *ngFor="let message of messages">
-  <a [href]="setMessage(message)">{{message.text}}</a>
+  <div (click)="onSelect(message)">{{message.text}}</div>
 </div>
 

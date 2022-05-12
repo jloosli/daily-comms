@@ -1,1 +1,11 @@
-<p>select works!</p>
+<form (ngSubmit)="onSubmit()" [formGroup]="messageForm">
+  <div>
+    <label for="message-text">Message Text</label>
+    <textarea id="message-text" formControlName="text"></textarea>
+  </div>
+  <div><input type="checkbox" id="add" formControlName="add"><label for="add">Add</label></div>
+  <div><input type="checkbox" id="update" formControlName="update"><label for="update">Update</label></div>
+  <div>
+    <button type="submit">Set text</button>
+  </div>
+</form>

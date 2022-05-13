@@ -1,4 +1,4 @@
 <div *ngFor="let message of messages">
-  <div (click)="onSelect(message)">{{message.text}}</div>
+  <button type="button" (click)="onSelect(message)">{{message.text}}</button>
 </div>
 

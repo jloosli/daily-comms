@@ -12,11 +12,10 @@ export class SelectComponent implements OnInit {
 
   messageForm = this.fb.group({
     text: [''],
-    add: [false],
-    update: [false],
+    action: [null],
   });
 
-  @Input() set message(message: Message | undefined) {
+  @Input() set message(message: Message | null) {
     if (message) {
       this.messageForm.get('text')?.patchValue(message.text);
     }
@@ -25,7 +24,7 @@ export class SelectComponent implements OnInit {
   @Input() phone: string | null = '';
   @Output() send = new EventEmitter<ISendMessage>();
 
-  constructor(private fb: FormBuilder, private sanitizer: DomSanitizer) {
+  constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -35,8 +34,8 @@ export class SelectComponent implements OnInit {
     this.send.emit({
       text: this.messageForm.get('text')?.value,
       id: this.message?.id,
-      add: this.messageForm.get('add')?.value,
-      update: this.messageForm.get('update')?.value,
+      add: this.messageForm.get('action')?.value === 'add',
+      update: this.messageForm.get('action')?.value === 'update',
     });
   }
 }

@@ -14,28 +14,27 @@ import {ISendMessage} from 'projects/frontend/src/app/messages/select/select.com
 export class MessagesComponent {
   messages$!: Observable<Message[]>;
   phone$: Observable<string>;
-  selectedMessage: Message | undefined;
   smsLink: SafeResourceUrl | undefined;
+  message$: Observable<Message | null>;
 
   constructor(private messagesSvc: MessagesService, private phoneSvc: PhoneService, private sanitizer: DomSanitizer) {
     this.messages$ = this.messagesSvc.messages$;
+    this.message$=this.messagesSvc.currentMessage$;
     this.phone$ = this.phoneSvc.phone$;
   }
 
   @ViewChild('smsLinkRef', {static: true}) smsLinkRef!: ElementRef;
 
   async onSend(message: ISendMessage): Promise<void> {
-    let theMessage = await this.setMessage(message);
+    let theMessage = await this.setSMSString(message);
     this.smsLink = theMessage;
   }
 
   onSelected(id: string): void {
-    this.messages$.pipe(take(1)).subscribe(messages => {
-      this.selectedMessage = messages.find(message => message.id === id);
-    });
+    this.messagesSvc.setCurrent(id);
   }
 
-  private async setMessage({text}: Pick<Message, 'text'>): Promise<SafeResourceUrl> {
+  private async setSMSString({text}: Pick<Message, 'text'>): Promise<SafeResourceUrl> {
     const phone = await firstValueFrom(this.phone$.pipe(take(1)));
     return this.sanitizer.bypassSecurityTrustResourceUrl(`sms://${phone}?body=${text}`);
   }

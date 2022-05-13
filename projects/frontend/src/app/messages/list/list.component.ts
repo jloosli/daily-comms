@@ -14,7 +14,7 @@ export class ListComponent implements OnInit {
   @Output() selectMessage = new EventEmitter<string>();
   @Output() deleteMessage = new EventEmitter<string>();
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -23,7 +23,6 @@ export class ListComponent implements OnInit {
 
 
   onSelect({id}: Message): void {
-    console.log(id);
     this.selectMessage.emit(id);
   }
 

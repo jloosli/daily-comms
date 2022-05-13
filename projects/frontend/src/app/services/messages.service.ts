@@ -27,8 +27,8 @@ export class MessagesService {
     );
   }
 
-  addMessage(message: Message) {
-    return addDoc(this.collRef, message);
+  addMessage(message: string) {
+    return addDoc(this.collRef, {text:message, count: 1});
   }
 
   updateMessage(id: string, message: Partial<Message>) {
@@ -49,7 +49,7 @@ export class MessagesService {
 
 const messageConverter = {
   toFirestore: (message: Message): DocumentData => {
-    return {text: message.text, count: message.count, last_sent: message.last_sent};
+    return {text: message.text, count: message.count, last_sent: message?.last_sent};
   },
   fromFirestore: (snapshot: QueryDocumentSnapshot, options: SnapshotOptions): Message => {
     const {count = 0, last_sent, text} = snapshot.data(options);

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
 import {MessagesService} from 'projects/frontend/src/app/services/messages.service';
 import {firstValueFrom, Observable, take} from 'rxjs';
 import {Message} from 'projects/frontend/src/app/interfaces/message';
@@ -17,17 +17,23 @@ export class MessagesComponent {
   smsLink: SafeResourceUrl | undefined;
   message$: Observable<Message | null>;
 
-  constructor(private messagesSvc: MessagesService, private phoneSvc: PhoneService, private sanitizer: DomSanitizer) {
+  constructor(private messagesSvc: MessagesService, private phoneSvc: PhoneService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {
     this.messages$ = this.messagesSvc.messages$;
-    this.message$=this.messagesSvc.currentMessage$;
+    this.message$ = this.messagesSvc.currentMessage$;
     this.phone$ = this.phoneSvc.phone$;
   }
 
   @ViewChild('smsLinkRef', {static: true}) smsLinkRef!: ElementRef;
 
   async onSend(message: ISendMessage): Promise<void> {
-    let theMessage = await this.setSMSString(message);
-    this.smsLink = theMessage;
+    this.smsLink = await this.setSMSString(message);
+    this.cdr.detectChanges();
+    if (message.add) {
+      await this.messagesSvc.addMessage(message.text);
+    }
+    if (message.update) {
+      await this.messagesSvc.updateMessage(message.id!, {text: message.text});
+    }
   }
 
   onSelected(id: string): void {

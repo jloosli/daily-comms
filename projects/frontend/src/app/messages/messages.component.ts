@@ -14,20 +14,18 @@ import {ISendMessage} from 'projects/frontend/src/app/messages/select/select.com
 export class MessagesComponent {
   messages$!: Observable<Message[]>;
   phone$: Observable<string>;
-  smsLink: SafeResourceUrl | undefined;
   message$: Observable<Message | null>;
 
-  constructor(private messagesSvc: MessagesService, private phoneSvc: PhoneService, private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {
+  constructor(private messagesSvc: MessagesService,
+              private phoneSvc: PhoneService) {
     this.messages$ = this.messagesSvc.messages$;
     this.message$ = this.messagesSvc.currentMessage$;
     this.phone$ = this.phoneSvc.phone$;
   }
 
-  @ViewChild('smsLinkRef', {static: true}) smsLinkRef!: ElementRef;
 
   async onSend(message: ISendMessage): Promise<void> {
-    this.smsLink = await this.setSMSString(message);
-    this.cdr.detectChanges();
+    await this.createSMSAnchor(message);
     if (message.add) {
       await this.messagesSvc.addMessage(message.text);
     }
@@ -40,9 +38,12 @@ export class MessagesComponent {
     this.messagesSvc.setCurrent(id);
   }
 
-  private async setSMSString({text}: Pick<Message, 'text'>): Promise<SafeResourceUrl> {
+  private async createSMSAnchor({text}: Pick<Message, 'text'>): Promise<void> {
     const phone = await firstValueFrom(this.phone$.pipe(take(1)));
-    return this.sanitizer.bypassSecurityTrustResourceUrl(`sms://${phone}?body=${text}`);
+    const anchor = document.createElement('a');
+    anchor.href = `sms://${phone}?body=${text}`;
+    anchor.click();
+    anchor.remove();
   }
 
 }

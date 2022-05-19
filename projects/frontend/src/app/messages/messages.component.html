@@ -1,3 +1,2 @@
 <app-list [messages]="messages$ | async" (selectMessage)="onSelected($event)"></app-list>
 <app-select [message]="message$ | async" (send)="onSend($event)" [phone]="phone$ | async" ></app-select>
-<a *ngIf="smsLink" [href]="smsLink" #smsLinkRef >Click to Send SMS</a>

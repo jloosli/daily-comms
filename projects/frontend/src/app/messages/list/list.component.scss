@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  flex-flow: row wrap;
+  gap: var(--size-1);
+}
+
+.message {
+  button {
+    padding: var(--size-3);
+  }
+}

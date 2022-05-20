@@ -1,3 +1,10 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+body {
+
+}
+
+.container {
+  width: min(100vw - 2rem, 50rem);
+  margin-inline: auto;
+
+  margin-bottom: var(--size-3);
+}

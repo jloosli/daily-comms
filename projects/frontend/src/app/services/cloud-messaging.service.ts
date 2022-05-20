@@ -1,9 +1,38 @@
-import { Injectable } from '@angular/core';
-
+import {Injectable, Optional} from '@angular/core';
+import {getToken, Messaging, onMessage} from '@angular/fire/messaging';
+import {EMPTY, from, Observable, share, tap} from 'rxjs';
+import {environment} from 'projects/frontend/src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class CloudMessagingService {
 
-  constructor(private afMessaging: AngularFire) { }
+  token$: Observable<any> = EMPTY;
+  message$: Observable<any> = EMPTY;
+  showRequest = false;
+
+
+  constructor(@Optional() messaging: Messaging) {
+    console.log('messaging', messaging);
+    if (messaging) {
+      this.token$ = from(
+        navigator.serviceWorker.register('firebase-messaging-sw.js', { type: 'module', scope: '__' }).
+        then(serviceWorkerRegistration =>
+          getToken(messaging, {
+            serviceWorkerRegistration,
+            vapidKey: environment.firebase.vapidKey,
+          })
+        )).pipe(
+        tap(token => console.log('FCM', {token})),
+        share(),
+      );
+      this.message$ = new Observable(sub => onMessage(messaging, it => sub.next(it))).pipe(
+        tap(token => console.log('FCM', {token})),
+      );
+    }
+  }
+
+  request() {
+    Notification.requestPermission();
+  }
 }

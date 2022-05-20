@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Message} from 'projects/frontend/src/app/interfaces/message';
-import {FormBuilder} from '@angular/forms';
+import {UntypedFormBuilder} from '@angular/forms';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
@@ -24,7 +24,7 @@ export class SelectComponent implements OnInit {
   @Input() phone: string | null = '';
   @Output() send = new EventEmitter<ISendMessage>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
   }
 
   ngOnInit(): void {

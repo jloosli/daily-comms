@@ -1,4 +1,5 @@
 import {ChangeDetectionStrategy, Component } from '@angular/core';
+import {CloudMessagingService} from 'projects/frontend/src/app/services/cloud-messaging.service';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,9 @@ import {ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Daily Comms';
+
+  constructor(private cm: CloudMessagingService) {
+    cm.request();
+  }
+
 }

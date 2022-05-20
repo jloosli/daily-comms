@@ -31,7 +31,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/frontend/src/favicon.ico",
-              "projects/frontend/src/assets"
+              "projects/frontend/src/assets",
+              "projects/frontend/src/firebase-messaging-sw.js"
             ],
             "styles": [
               "projects/frontend/src/styles.scss"

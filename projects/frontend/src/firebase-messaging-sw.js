@@ -24,7 +24,26 @@ isSupported().then(isSupported => {
     onBackgroundMessage(messaging, (payload) => {
       const { notification: { title, body, click_action } } = payload;
       console.log('[firebase-messaging-sw.js] Received background message ', payload);
-      self.registration.showNotification(title, { body, click_action });
+      self.registration.showNotification(title, { body, click_action, actions: [{ action: 'close', title: 'Close' }] });
     });
   }
+
+  self.addEventListener('notificationclick', function(event) {
+    console.log('[firebase-messaging-sw.js] On notification click: ', event);
+    event.notification.close();
+
+    // This looks to see if the current is already open and
+    // focuses if it is
+    event.waitUntil(clients.matchAll({
+      type: "window"
+    }).then(function(clientList) {
+      for (var i = 0; i < clientList.length; i++) {
+        var client = clientList[i];
+        if (client.url === 'https://daily-comms.web.app/' && 'focus' in client)
+          return client.focus();
+      }
+      if (clients.openWindow)
+        return clients.openWindow('https://daily-comms.web.app/');
+    }));
+  });
 });

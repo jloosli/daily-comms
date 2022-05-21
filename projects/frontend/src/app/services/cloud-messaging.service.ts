@@ -2,8 +2,9 @@ import {Injectable, Optional} from '@angular/core';
 import {getToken, Messaging, onMessage} from '@angular/fire/messaging';
 import {EMPTY, from, Observable, share, tap} from 'rxjs';
 import {environment} from 'projects/frontend/src/environments/environment';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CloudMessagingService {
 
@@ -13,22 +14,26 @@ export class CloudMessagingService {
 
 
   constructor(@Optional() messaging: Messaging) {
-    console.log('messaging', messaging);
     if (messaging) {
       this.token$ = from(
-        navigator.serviceWorker.register('firebase-messaging-sw.js', { type: 'module', scope: '__' }).
-        then(serviceWorkerRegistration =>
+        navigator.serviceWorker.register('firebase-messaging-sw.js', {
+          type: 'module',
+          scope: '/',
+        }).then(serviceWorkerRegistration =>
           getToken(messaging, {
             serviceWorkerRegistration,
             vapidKey: environment.firebase.vapidKey,
-          })
+          }),
         )).pipe(
-        tap(token => console.log('FCM', {token})),
+        tap(token => console.log('FCM - token', {token})),
         share(),
       );
-      this.message$ = new Observable(sub => onMessage(messaging, it => sub.next(it))).pipe(
-        tap(token => console.log('FCM', {token})),
-      );
+      this.message$ = new Observable(sub => onMessage(messaging, it => sub.next(it)))
+        .pipe(
+          tap(payload => console.log('FCM - payload', payload)),
+        );
+      this.message$.subscribe();
+      this.token$.subscribe();
     }
   }
 

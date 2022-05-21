@@ -24,9 +24,9 @@ isSupported().then(isSupported => {
     const messaging = getMessaging(app);
 
     onBackgroundMessage(messaging, (payload) => {
-      const { notification: { title, body, image } } = payload;
+      const { notification: { title, body, click_action } } = payload;
       console.log('[firebase-messaging-sw.js] Received background message ', payload);
-      self.registration.showNotification(title, { body });
+      self.registration.showNotification(title, { body, click_action });
     });
 
 

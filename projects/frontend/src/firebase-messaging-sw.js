@@ -24,7 +24,7 @@ isSupported().then(isSupported => {
     onBackgroundMessage(messaging, (payload) => {
       const { notification: { title, body, click_action } } = payload;
       console.log('[firebase-messaging-sw.js] Received background message ', payload);
-      self.registration.showNotification(title, { body, click_action, actions: [{ action: 'close', title: 'Close' }] });
+      self.registration.showNotification(title, { body, click_action, tag: 'daily-comms' });
     });
   }
 

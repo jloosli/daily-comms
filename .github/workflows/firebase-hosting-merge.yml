@@ -11,15 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn
+      - run: yarn install --frozen-lockfile
       - run: yarn run build
-      - run: npx firebase-tools deploy --only hosting --token "$FIREBASE_TOKEN"  --non-interactive --project=daily-comms
+      - run: yarn install --cwd projects/functions --frozen-lockfile
+      - run: yarn run build install --cwd projects/functions
+      - run: npx firebase-tools deploy --only hosting, functions --token "$FIREBASE_TOKEN"  --non-interactive --project=daily-comms
         env:
           FIREBASE_TOKEN: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAILY_COMMS }}"
-
-#      - uses: FirebaseExtended/action-hosting-deploy@v0
-#        with:
-#          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-#          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAILY_COMMS }}'
-#          projectId: "daily-comms"
-#          channelId: live

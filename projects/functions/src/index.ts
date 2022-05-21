@@ -1,9 +1,9 @@
 import * as functions from "firebase-functions";
 
-exports.scheduledFunctionCrontab = functions.pubsub.schedule("* * * * *").timeZone("America/Denver")
+exports.scheduledFunctionCrontab = functions.pubsub.schedule("0 10 * * *").timeZone("America/Denver")
   .onRun((context) => {
     // This will be executed every day at 9:00 AM
-    console.log("This should be run every minute");
+    console.log("This should run at 10 am.");
     return null;
   });
 

@@ -7,14 +7,14 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - main
 jobs:
-  build_and_preview:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: yarn install --frozen-lockfile
       - run: yarn run build
       - run: yarn install --cwd projects/functions --frozen-lockfile
-      - run: yarn run build install --cwd projects/functions
+#      - run: yarn run build --cwd projects/functions
       - run: npx firebase-tools deploy --only hosting, functions --token "$FIREBASE_TOKEN"  --non-interactive --project=daily-comms
         env:
           FIREBASE_TOKEN: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_DAILY_COMMS }}"

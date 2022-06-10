@@ -5,7 +5,7 @@ admin.initializeApp();
 
 exports.scheduledFunctionCrontab = functions.pubsub.schedule('0 10 * * *').timeZone('America/Denver')
   .onRun((context) => {
-    // This will be executed every day at 9:00 AM
+    // This will be executed every day at 10:00 AM
     console.log('This should run at 10 am.');
     return null;
   });
@@ -27,7 +27,7 @@ exports.sendPushNotification = functions.https.onRequest(async (request, respons
           body: 'Time to click',
           click_action: 'https://daily-comms.web.app/',
         },
-        fcm_options: {
+        fcmOptions: {
           link: "https://daily-comms.web.app/"
         }
       }
